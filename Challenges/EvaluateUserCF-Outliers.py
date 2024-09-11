@@ -1,11 +1,10 @@
 
 
-from MovieLens import MovieLens
+from MovieLens3 import MovieLens
 from surprise import KNNBasic
 import heapq
 from collections import defaultdict
 from operator import itemgetter
-from surprise.model_selection import LeaveOneOut
 from RecommenderMetrics import RecommenderMetrics
 from EvaluationData import EvaluationData
 

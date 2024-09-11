@@ -1,8 +1,9 @@
+# -*- coding: utf-8 -*-
 
 from MovieLens import MovieLens
-from ContentKNNAlgorithm import ContentKNNAlgorithm
-from Evaluator import Evaluator
+from RBMAlgorithm import RBMAlgorithm
 from surprise import NormalPredictor
+from Evaluator import Evaluator
 
 import random
 import numpy as np
@@ -24,15 +25,15 @@ random.seed(0)
 # Construct an Evaluator to, you know, evaluate them
 evaluator = Evaluator(evaluationData, rankings)
 
-contentKNN = ContentKNNAlgorithm()
-evaluator.AddAlgorithm(contentKNN, "ContentKNN")
+#RBM
+RBM = RBMAlgorithm(epochs=20)
+evaluator.AddAlgorithm(RBM, "RBM")
 
 # Just make random recommendations
 Random = NormalPredictor()
 evaluator.AddAlgorithm(Random, "Random")
 
+# Fight!
 evaluator.Evaluate(False)
 
-evaluator.SampleTopNRecs(ml)
-
-
+#evaluator.SampleTopNRecs(ml)

@@ -1,11 +1,11 @@
 
 
-from MovieLens import MovieLens
+from MovieLens2 import MovieLens
 from surprise import KNNBasic
 import heapq
+import random
 from collections import defaultdict
 from operator import itemgetter
-from surprise.model_selection import LeaveOneOut
 from RecommenderMetrics import RecommenderMetrics
 from EvaluationData import EvaluationData
 
@@ -32,6 +32,10 @@ model.fit(trainSet)
 simsMatrix = model.compute_similarities()
 
 leftOutTestSet = evalData.GetLOOCVTestSet()
+
+# Get new movies that need data
+newMovies = ml.getNewMovies()
+explorationSlot = 9
 
 # Build up dict to lists of (int(movieID), predictedrating) pairs
 topN = defaultdict(list)
@@ -65,7 +69,11 @@ for uiid in range(trainSet.n_users):
     pos = 0
     for itemID, ratingSum in sorted(candidates.items(), key=itemgetter(1), reverse=True):
         if not itemID in watched:
-            movieID = trainSet.to_raw_iid(itemID)
+            movieID = 0
+            if (pos == explorationSlot):
+                movieID = random.choice(newMovies)
+            else:
+                movieID = trainSet.to_raw_iid(itemID)
             topN[int(trainSet.to_raw_uid(uiid))].append( (int(movieID), 0.0) )
             pos += 1
             if (pos > 40):
